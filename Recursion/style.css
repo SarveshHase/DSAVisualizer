@@ -1,0 +1,127 @@
+@import url("https://fonts.googleapis.com/css2?family=Honk&family=Protest+Strike&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: #000;
+    color: #fff;
+}
+
+header {
+    color: azure;
+    text-align: center;
+    font-size: 4rem;
+    padding: 1rem;
+    font-family: 'Honk', sans-serif;
+}
+
+.inputbag {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+.pouch {
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+.inputbag textarea, .inputbag input {
+    background-color: #030637;
+    outline: none;
+    width: 100%;
+    color: #fff;
+    padding: 10px;
+    border-radius: 1rem;
+    border: 2px solid rgba(255,255,255,0.25);
+    font-family: monospace;
+}
+
+.inputbag textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.inputbag label {
+    color: rgba(255,255,255,0.6);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+textarea::placeholder, input::placeholder {
+    color: rgba(255,255,255,0.3);
+}
+
+textarea:focus, input:focus {
+    border: 2px solid #00dfc4;
+}
+
+.switch {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn {
+    background-color: cyan;
+    border: 1px solid cyan;
+    color: #000;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 0 5px cyan, 0 0 25px cyan;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #00dfc4;
+    border: 1px solid #00dfc4;
+    box-shadow: 0 0 5px #00dfc4, 0 0 25px #00dfc4, 0 0 50px #00dfc4;
+}
+
+.tree-container {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    padding: 2rem;
+}
+
+.tree-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 1rem;
+}
+
+.node-content {
+    background-color: #383ebc;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.node-children {
+    display: flex;
+    justify-content: center;
+}
+
+.results {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.comparisons, .final {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}

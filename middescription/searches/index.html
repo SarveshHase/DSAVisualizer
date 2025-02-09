@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Types of Searches</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+      <div class="one block">
+        <pre class="linear onhover" style="margin-top: 50px;">
+int linearSearch(int arr[], int n, int key) {
+    for (int i = 0; i < n; ++i) {
+        if (arr[i] == key) {
+            return i; // Return the index if key is found
+        }
+    }
+    return -1; // Return -1 if key is not found
+}
+        </pre>
+        <pre class="binary onhover">
+int binarySearch(const vector<int>& arr, int key) {
+    int low = 0;
+    int high = arr.size() - 1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == key) {
+            return mid; // Return the index if key is found
+        } 
+        else if (arr[mid] < key) {
+            low = mid + 1;
+        } 
+        else {
+            high = mid - 1;
+        }
+    }
+
+    return -1; // Return -1 if key is not found
+}
+        </pre>
+      </div>
+      <div class="two block">
+        <h1>TYPES OF SEARCHES</h1>
+        <button class="Linear-Search box" onclick="location.href='../../LinearSearch/index.html'">
+            LINEAR SEARCH
+        </button>
+        <button class="Binary-Search box" onclick="location.href='../../BinarySearch/index.html'">
+            BINARY SEARCH 
+        </button>
+        <button class="Sentinel-Search box" onclick="location.href='../../SentinelSearch/index.html'">
+            SENTINEL SEARCH 
+        </button>
+      </div>
+      <div class="three block">
+        <pre class="Sentinel onhover">
+int sentinelSearch(int arr[], int n, int key) {
+            // Add a sentinel at the end of the array
+            int last = arr[n - 1];
+            arr[n - 1] = key;
+        
+            int i = 0;
+            while (arr[i] != key) {
+                ++i;
+            }
+        
+            // Restore the last element
+            arr[n - 1] = last;
+        
+            if (i < n - 1 || arr[n - 1] == key) {
+                return i; // Return the index if key is found
+            } else {
+                return -1; // Return -1 if key is not found
+            }
+        }</pre>
+        <pre class="Fibonacci onhover">
+int findFibonacci(int n) {
+    int fibPrev = 0;
+    int fibCurrent = 1;
+
+    while (fibCurrent < n) {
+        int temp = fibCurrent;
+        fibCurrent += fibPrev;
+        fibPrev = temp;
+    }
+
+    return fibCurrent;
+}
+// Fibonacci Search Function
+int fibonacciSearch(int arr[], int n, int key) {
+    int fibM2 = 0; // (m-2)th Fibonacci number
+    int fibM1 = 1; // (m-1)th Fibonacci number
+    int fib = fibM2 + fibM1; // mth Fibonacci number
+    while (fib < n) {
+        fibM2 = fibM1;
+        fibM1 = fib;
+        fib = fibM2 + fibM1;
+    }
+    int offset = -1;
+    while (fib > 1) {
+        int i = min(offset + fibM2, n - 1);
+
+        if (arr[i] < key) {
+            fib = fibM1;
+            fibM1 = fibM2;
+            fibM2 = fib - fibM1;
+            offset = i;
+        } 
+        else if (arr[i] > key) {
+            fib = fibM2;
+            fibM1 -= fibM2;
+            fibM2 = fib - fibM1;
+        } 
+        else {
+            return i; // Return the index if key is found
+        }
+    }
+    if (fibM1 && arr[offset + 1] == key) {
+        return offset + 1; // Return the index if key is found
+    }
+    return -1; // Return -1 if key is not found
+}</pre>
+      </div>
+    <script src="script.js"></script>
+  </body>
+</html>

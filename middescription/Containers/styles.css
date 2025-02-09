@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Honk&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+    background-color: #000000;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    overflow: hidden;
+}
+
+h1{
+    text-align: center;
+    font-family: "Honk", system-ui;
+    position: relative;
+    top: -10%;
+    font-size: 60px;
+}
+.one ul,.three ul{
+    list-style: inside;
+    list-style-type: upper-alpha;
+}
+
+.two{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container box styles */
+.box {
+    font-size: 1.2rem;
+    padding: 1rem 2.5rem;
+    border: none;
+    outline: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: rgb(14, 14, 26);
+    color: rgb(234, 234, 234);
+    font-weight: 700;
+    transition: 0.6s;
+    box-shadow: 7px 7px 20px #85d23d;
+    margin-bottom: 50px;
+}
+
+.box:hover {
+    background: linear-gradient(270deg, rgba(2, 29, 78, 0.681) 0%, rgba(227, 240, 239, 0.873) 60%);
+    color: rgb(4, 4, 38);
+    font-weight: bolder;
+    box-shadow: -7px -7px 20px #d23d3d;
+}
+
+.block{
+    width: 450px;
+    height: 100%;
+}
+
+.one,.three{
+    font-family: "Roboto Mono", monospace;
+    color: aliceblue;
+    font-size: 14px;
+    list-style: none;
+}
+
+/* Animation styles */
+.onhover{
+    display: none;
+}
+
+.onhover{
+    width: fit-content;
+    position: absolute;
+    color: azure;
+    border: 2px solid;
+    background-color: black;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.8);
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.8);
+    }
+}

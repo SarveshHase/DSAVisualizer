@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vector Visualization</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Honk&family=Protest+Strike&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Old+Standard+TT&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #000000;
+        font-family: "Montserrat", sans-serif;
+        text-align: center;
+        color: azure;
+        font-weight: 700;
+        line-height: 1.6;
+        /* height: 100vh; */
+        /* width: 100vw; */
+        /* max-width: fit-content; */
+        overflow: hidden;
+      }
+
+      #title {
+        font-family: "Honk", "Arial", sans-serif !important;
+        font-size: 4rem;
+        background-color: #000000;
+      }
+      .operate {
+        /* height: 30px; */
+        padding: 20px;
+        /* width: 100vw; */
+        display: flex;
+        flex-direction: row;
+        background-color: #4caf50;
+        /* opacity: 0.3; */
+        justify-content: space-around;
+        margin-right: 20px;
+      }
+      .button {
+        position: relative;
+        width: 120px;
+        height: 40px;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        color: white;
+        flex-direction: column;
+        justify-content: center;
+        border: none;
+        padding: 12px;
+        gap: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .button::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        left: -4px;
+        top: -1px;
+        margin: auto;
+        width: 128px;
+        height: 48px;
+        border-radius: 10px;
+        background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
+        z-index: -10;
+        pointer-events: none;
+        transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .button::after {
+        content: "";
+        z-index: -1;
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+        transform: translate3d(0, 0, 0) scale(0.95);
+        filter: blur(20px);
+      }
+
+      .button:hover::after {
+        filter: blur(30px);
+      }
+
+      .button:hover::before {
+        transform: rotate(-180deg);
+      }
+
+      .button:active::before {
+        scale: 0.7;
+      }
+
+      .vector-container {
+        padding: 10px;
+        height: 70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .vector-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        font-size: 24px;
+        color: #fff;
+        width: 80px;
+        height: 80px;
+        background-color: #4caf50;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        outline: 2px solid white;
+      }
+
+      .delete-animation {
+        animation: delete 0.5s ease-in-out;
+      }
+
+      .insert-animation {
+        animation: insert 0.5s ease-in-out;
+      }
+
+      .swap-animation {
+        animation: swap 0.5s ease-in-out;
+        background-color: #ffeb3b; /* Highlight on swap */
+      }
+
+      .sizeInfo{
+        height: 10vh;
+        background-color: #4caf50;
+
+      }
+
+      @keyframes insert {
+        0% {
+          transform: scale(0);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes delete {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0);
+          opacity: 0;
+        }
+      }
+
+      @keyframes swap {
+        0% {
+          transform: translateY(0);
+        }
+        25% {
+          transform: translateY(calc(20px));
+        }
+        75% {
+          transform: translateY(calc(-100%));
+        }
+        100% {
+          transform: translateY(calc(100%));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title" class="animate__animated animate__backInRight">Vector Visualizer</h1>
+    <div class="operate animate__animated animate__flipInX" >
+      <button class="button" onclick="generateRandomVector()">
+        Generate Vector
+      </button>
+      <select
+        class="button"
+        id="operationSelect"
+        style="border: 2px solid white"
+      >
+        <option value="insert">Insert</option>
+        <option value="delete">Delete</option>
+        <option value="replace">Replace</option>
+        <option value="reverse">Reverse</option>
+      </select>
+      <button class="button" onclick="performOperation()">
+        Perform Operation
+      </button>
+      <input
+        type="range"
+        class="button"
+        id="speedControl"
+        min="1"
+        max="5"
+        value="2"
+      />
+    </div>
+    <div class="vector-container" id="vectorContainer"></div>
+    <div class="sizeInfo"></div>
+    <script>
+      function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
+      let animationSpeed = 2; // Default speed (seconds)
+
+      let vector = [];
+
+      const vectorContainer = document.getElementById("vectorContainer");
+      const operationSelect = document.getElementById("operationSelect");
+      const speedControl = document.getElementById("speedControl");
+
+      async function iter(index){
+      let item = document.querySelectorAll(".vector-item");
+      for (let i=0;i<=index;i++){
+        item[i].style.transition = "backgroundColor 2s ease-in-out";
+        item[i].style.backgroundColor="black";
+        await sleep(animationSpeed*500);
+        item[i].style.backgroundColor="#4CAF50";
+      }
+    }
+
+      function visualizeVector() {
+        vectorContainer.innerHTML = "";
+        vector.forEach((element, index) => {
+          const item = document.createElement("div");
+          item.classList.add("vector-item");
+          item.setAttribute("data-index", index);
+          item.innerHTML = element;
+          vectorContainer.appendChild(item);
+        });
+      }
+
+      function generateRandomVector() {
+        const size = Math.floor(Math.random() * 11) + 5;
+        vector = Array.from({ length: size }, () =>
+          Math.floor(Math.random() * 101)
+        );
+        visualizeVector();
+      }
+
+      function updatesize(){
+        document.querySelector(".sizeInfo").innerHTML=`Current Size of Vector is ${vector.length}`;
+      }
+
+
+
+      function performOperation() {
+        const operation = operationSelect.value.toLowerCase();
+        switch (operation) {
+          case "insert":
+            insertElement();
+            updatesize();
+            break;
+            case "delete":
+              deleteElement();
+              updatesize();
+              break;
+              case "replace": // Added case for replace operation
+              replaceElement();
+              updatesize();
+              break;
+              case "reverse":
+                reverseVector();
+                updatesize();
+            break;
+          default:
+            alert("Invalid operation! Please select a valid option.");
+        }
+      }
+
+      async function insertElement() {
+        const value = parseInt(prompt("Enter value to insert:"));
+        const index = parseInt(prompt("Enter index to insert at:"));
+        await sleep(animationSpeed * 1000);
+        if (
+          !isNaN(value) &&
+          !isNaN(index) &&
+          index >= 0 &&
+          index <= vector.length
+          ) {
+            await iter(index);
+          vector.splice(index, 0, value);
+          visualizeVector();
+          const insertedItem = document.querySelector(
+            `.vector-item[data-index='${index}']`
+          );
+          if (insertedItem) {
+            insertedItem.classList.add("insert-animation");
+            setTimeout(() => {
+              insertedItem.classList.remove("insert-animation");
+            }, animationSpeed * 1000);
+          }
+        } else {
+          alert("Invalid input! Please enter a valid index.");
+        }
+      }
+
+      async function deleteElement() {
+        const index = parseInt(prompt("Enter index to delete:"));
+        if (!isNaN(index) && index >= 0 && index < vector.length) {
+          await iter(index);
+          const deletedItem = document.querySelector(
+            `.vector-item[data-index='${index}']`
+          );
+          if (deletedItem) {
+            deletedItem.classList.add("delete-animation");
+            await sleep(animationSpeed * 1000);
+            deletedItem.remove();
+          }
+          const deletedValue = vector.splice(index, 1)[0];
+          visualizeVector();
+        } else {
+          alert("Invalid input! Please enter a valid index.");
+        }
+      }
+
+      async function replaceElement() {
+      const index = parseInt(prompt("Enter index to replace:"));
+
+      if (!isNaN(index) && index >= 0 && index < vector.length) {
+        const newValue = parseInt(prompt("Enter the new value:"));
+        await iter(index);
+        if (!isNaN(newValue)) {
+          if (vector[index] !== undefined) {
+            const replacedItem = document.querySelector(`.vector-item[data-index='${index}']`);
+            if (replacedItem) {
+              let item = document.querySelectorAll(".vector-item");
+              item[index].classList.add('animate__animated','animate__bounceOutUp');
+              await sleep (animationSpeed*1000);
+              vector[index] = newValue;
+              item[index].innerHTML=newValue;
+    
+              item[index].classList.remove('animate__animated','animate__bounceOutUp');
+              
+              item[index].classList.add('animate__animated','animate__bounceInUp');
+              await sleep (animationSpeed*1000);
+              item[index].classList.remove('animate__animated','animate__bounceInUp');
+            }
+          }
+          visualizeVector();
+        } 
+        else {
+          alert("Invalid input! Please enter a valid new value.");
+        }
+      } 
+      else {
+        alert("Invalid input! Please enter a valid index.");
+      }
+    }
+
+      async function reverseVector() {
+        const n = vector.length;
+        let item = document.querySelectorAll(".vector-item");
+        for (let i = 0; i < Math.floor(n / 2); i++) {
+          item[i].style.backgroundColor = "black";
+          item[n - i - 1].style.backgroundColor = "black";
+          await sleep(2000);
+          let temp = vector[i];
+          vector[i] = vector[n - i - 1];
+          vector[n - i - 1] = temp;
+
+          item[i].style.transition = "transform 2s ease-in-out";
+          item[n - i - 1].style.transition = "transform 2s ease-in-out";
+
+          item[i].style.transform = `translate(${80 * (n - i - 1 - i)}px)`;
+          item[n - i - 1].style.transform = `translate(${
+            -80 * (n - i - 1 - i)
+          }px)`;
+
+          await new Promise((resolve) => {
+            item[i].addEventListener("transitionend", resolve, { once: true });
+            item[n - i - 1].addEventListener("transitionend", resolve, {
+              once: true,
+            });
+          });
+
+          item[i].style.backgroundColor = "#4CAF50";
+          item[n - i - 1].style.backgroundColor = "#4CAF50";
+          await sleep(2000);
+        }
+      }
+
+      speedControl.addEventListener("input", () => {
+        animationSpeed = 6 - speedControl.value;
+      });
+    </script>
+  </body>
+</html>

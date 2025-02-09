@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIFO Queue</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 id="title">FIFO Queue Simulation</h1>
+  <div class="container">
+    <input type="text" id="value-input" placeholder="Enter value">
+    <button id="enqueue-btn">Enqueue</button>
+    <button id="dequeue-btn" disabled>Dequeue</button>
+    <div id="message"></div>
+    <div id="message1"></div>
+    <div class="queue-representation"></div>
+    <label for="speedControl">Animation Speed:</label>
+    <input type="range" min="1" max="5" value="2" id="speedControl">
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

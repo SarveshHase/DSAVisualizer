@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Honk&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    background-color: #000000;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    overflow: hidden;
+}
+
+h1 {
+    text-align: center;
+    font-family: "Honk", system-ui;
+    position: relative;
+    top: -10%;
+    font-size: 60px;
+    color: #ffffff;
+    letter-spacing:2px;
+}
+
+.two {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Styling for the buttons in the middle block */
+.box {
+    font-size: 1.2rem;
+    padding: 1rem 2.5rem;
+    border: none;
+    outline: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: rgb(14, 14, 26);
+    color: rgb(234, 234, 234);
+    font-weight: 700;
+    transition: 0.6s;
+    box-shadow: 7px 7px 20px #85d23d;
+    margin-bottom: 50px;
+}
+
+.box:hover {
+    background: linear-gradient(270deg, rgba(2, 29, 78, 0.681) 0%, rgba(31, 215, 232, 0.873) 60%);
+    color: rgb(4, 4, 38);
+    box-shadow: -7px -7px 20px #d23d3d;
+    font-weight: bolder;
+}
+
+.block {
+    width: 450px;
+    height: 100%;
+}
+
+/* Styling for the code blocks in the first and third sections */
+.one, .three {
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px;
+    overflow-x: auto;
+    color: #ffffff;
+}
+
+/* Styling for specific sorting algorithm boxes */
+.bubble,.selection,.insertion,.quick{
+    width: fit-content;
+    /* height: 100%; */
+    position: absolute;
+    color: azure;
+    border: 2px solid;
+    background-color: linear-gradient(223deg, rgba(255, 87, 34, 0.8) 12%, rgba(255, 193, 7, 0.9) 10%);
+    
+}
+
+.onhover {
+    display: none;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.8);
+    }
+}

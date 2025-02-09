@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursive Function Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        Recursive Function Visualizer 🌳
+    </header>
+    <div class="inputbag">
+        <div class="pouch">
+            <label for="functionInput">Choose a sample function:</label>
+            <select id="sampleFunctions" onchange="loadSampleFunction()">
+                <option value="custom">Custom Function</option>
+                <option value="fibonacci">Fibonacci</option>
+                <option value="factorial">Factorial</option>
+                <option value="custom">Custom Function</option>
+            </select>
+        </div>
+        <div class="pouch">
+            <label for="functionInput">Enter the recursive function:</label>
+            <textarea id="functionInput" placeholder="function f(n) { if (n <= 1) return 1; return f(n-1) + f(n-2); }"></textarea>
+        </div>
+        <div class="pouch">
+            <label for="inputValue">Enter the input value:</label>
+            <input type="number" id="inputValue" placeholder="5">
+        </div>
+    </div>
+    <div class="switch">
+        <button onclick="startVisualization()" class="btn">Visualize</button>
+    </div>
+    <div id="treeContainer" class="tree-container"></div>
+    <div class="results">
+        <div id="callCount" class="comparisons"></div>
+        <div id="finalResult" class="final"></div>
+    </div>
+    <script src="srcipt.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Honk&family=Protest+Strike&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Old+Standard+TT&display=swap");
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #000000;
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  color: azure;
+  font-weight: 700;
+  line-height: 1.6;
+  /* overflow: hidden; */
+}
+.container{
+    height: 20vh;
+}
+
+.controls{
+    width: 100vw;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+}
+
+#title {
+    font-family: "Honk", "Arial", sans-serif !important;
+    font-size: 4rem;
+  }
+
+h1 {
+    margin-bottom: 20px;
+}
+.info{
+    width: 100vw;
+    height: auto;
+    display: grid; 
+     grid-template-columns: 70% 1% 18%;
+}
+
+.stack-representation {
+    /* background-color: #4CAF50; */
+    /* Removed height: 200px; */
+    transition: all 3s ease-in;
+    width: 110px;
+    border: 3px solid #ddd;
+    border-top: none;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+    left: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* position: absolute; */
+}
+
+#message{
+    /* background-color: aqua; */
+}
+
+
+.stack-element {
+    width: 100px;
+    height: 40px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    /* margin-bottom: 5px; */
+    text-align: center;
+    color: #000000;
+}
+
+.stack-element:first-child {
+    margin-bottom: 0;
+}
+.pointer {
+    /* z-index: 999; */  /* You can uncomment this if needed for positioning */
+    width: 0;
+    height: 0;
+    border-right: 30px solid red; /* Left border for triangle */
+    border-bottom: 30px solid transparent; /* Bottom border for triangle */
+    border-top: 30px solid transparent; /* Top border for triangle */
+    position: relative;
+    left: -10vw;
+  }
+  
+
+#push-btn, #pop-btn {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#push-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#pop-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+#pop-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.push-animation {
+    animation: push 0.5s ease-in-out;
+}
+
+/* .pop-animation {
+    animation: pop 0.5s ease-in-out;
+} */
+
+@keyframes push {
+    from {
+        transform: translateY(-100px) translateX(-20px) rotate(-65deg);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* .pop-animation {
+    animation: animate__bounceOutUp 0.5s ease-in-out;
+    transform: rotate(65deg); /* Add the rotation */
+
+
+  .pop-animation {
+    animation: pop-out 0.5s ease-in-out; /* Define animation name and duration */
+  }
+  
+  @keyframes pop-out {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateX(50px) translateY(-100px) rotate(65deg); /* Move up with rotation */
+    }
+  }
+  
+  .full-rounded {
+    font-size: 16px;
+    position: relative;
+    margin: auto;
+    padding: 1em 2.5em 1em 2.5em;
+    border: none;
+    background: #fff;
+    transition: all 0.1s linear;
+    box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.1);
+  }
+  
+  .full-rounded:active {
+    transform: scale(0.95);
+  }
+  
+  .full-rounded span {
+    color: #464646;
+  }
+  
+  .full-rounded .border {
+    position: absolute;
+    border: 0.15em solid #fff;
+    transition: all 0.3s 0.08s linear;
+    top: 50%;
+    left: 50%;
+    width: 9em;
+    height: 3em;
+    transform: translate(-50%, -50%);
+  }
+  
+  .full-rounded:hover .border {
+    display: block;
+    width: 9.9em;
+    height: 3.7em;
+  }
+  
+  .full-rounded {
+    border-radius: 2em; /* This line is duplicated, but harmless */
+  }
+  

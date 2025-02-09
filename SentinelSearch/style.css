@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Honk&family=Protest+Strike&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: #000;
+}
+
+header {
+    color: azure;
+    text-align: center;
+    font-size: 4rem;
+    padding: 1rem;
+    font-family: 'Honk', sans-serif;
+}
+
+.inputbag {
+    margin-top: 2rem;
+    margin-left: 1rem;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.3rem;
+}
+
+.inputbag input {
+    background-color: #030637;
+    outline: none;
+    height: 2rem;
+    width: 20rem;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 1rem;
+    border: 2px solid rgba(255,255,255,0.25);
+}
+
+.inputbag label {
+    color: rgba(255,255,255,0.6);
+}
+
+input::placeholder {
+    text-align: center;
+}
+
+input:focus {
+    border-radius: 1rem;
+    border: 2px solid #00dfc4;
+}
+
+.switch {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    background-color: cyan;
+    border: 1px solid cyan;
+    color: #000;
+    padding: 1rem;
+    box-shadow: 0 0 5px cyan, 0 0 25px cyan;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: cyan;
+    border: 1px solid cyan;
+    color: #030637;
+    box-shadow: 0 0 5px cyan, 0 0 25px cyan,
+    0 0 50px cyan, 0 0 100px cyan, 0 0 20px cyan;
+}
+
+.show {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.box {
+    height: 8vh;
+    width: 6vw;
+    border: 3px solid white;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100%;
+    margin: 0.5rem;
+}
+
+.results {
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.steps, .final, .comparisons {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}

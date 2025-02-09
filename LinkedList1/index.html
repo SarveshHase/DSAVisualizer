@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linked List Visualizer</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Montserrat", sans-serif;
+      }
+
+      body {
+        background-color: #121212;
+        color: white;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      #title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        color: #0093e9;
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .operate {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background: linear-gradient(
+          43deg,
+          rgb(65, 88, 208) 0%,
+          rgb(200, 80, 192) 46%,
+          rgb(255, 204, 112) 100%
+        );
+        color: white;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-bottom: 30px;
+      }
+
+      button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(255, 204, 112, 0.5);
+      }
+
+      #linkedListContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 80px;
+      }
+
+      .node {
+        width: 100px;
+        height: 60px;
+        background: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        position: relative;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .arrow {
+        width: 30px;
+        height: 2px;
+        background-color: #80d0c7;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .arrow::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: -4px;
+        border: 6px solid transparent;
+        border-left-color: #80d0c7;
+      }
+
+      .highlight {
+        animation: pulse 1s infinite;
+      }
+
+      .found {
+        background: linear-gradient(160deg, #22c55e 0%, #16a34a 100%);
+      }
+
+      .delete {
+        background: linear-gradient(160deg, #ef4444 0%, #dc2626 100%);
+      }
+
+      .comparing {
+        background: linear-gradient(160deg, #eab308 0%, #ca8a04 100%);
+        transform: scale(1.1);
+      }
+
+      .swapping {
+        background: linear-gradient(160deg, #6366f1 0%, #4f46e5 100%);
+        transform: scale(1.1);
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.1);
+        }
+
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .info,
+      #sortInfo {
+        text-align: center;
+        margin-top: 1rem;
+        color: #80d0c7;
+        min-height: 50px;
+      }
+
+      #sortInfo {
+        color: #eab308;
+      }
+
+      #visitedElements {
+        text-align: center;
+        margin-top: 1rem;
+        color: #22c55e;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 id="title" class="animate__animated animate__backInRight">
+      Linked List Visualizer
+    </h1>
+
+    <div class="operate animate__animated animate__flipInX">
+      <button onclick="generateList()">Generate List</button>
+      <button onclick="insertNode()">Insert</button>
+      <button onclick="deleteNode()">Delete</button>
+      <button onclick="traverseList()">Traverse</button>
+      <button onclick="searchNode()">Search</button>
+      <button onclick="sortList()">Sort List</button>
+    </div>
+
+    <div id="linkedListContainer"></div>
+    <div id="info" class="info"></div>
+    <div id="visitedElements"></div>
+    <div id="sortInfo" class="info">
+      <br /><span id="algoInfo" class="algoInfo"></span>
+    </div>
+
+    <script>
+          let size = 0;
+          class Node {
+              constructor(value) {
+                  this.value = value;
+                  this.next = null;
+              }
+          }
+
+          let head = null;
+
+          function showAlert(message) {
+              alert(message);
+          }
+
+          function isListEmpty() {
+              return head === null;
+          }
+
+          async function generateList() {
+              size = prompt("Enter the size of the linked list:");
+              if (!size || isNaN(size) || size <= 0) {
+                  showAlert("Please enter a valid size (positive integer)");
+                  return;
+              }
+
+              head = null;
+              let current = null;
+
+              for (let i = 0; i < parseInt(size); i++) {
+                  const value = prompt(`Enter value for node ${i + 1}:`);
+                  if (value === null) {
+                      showAlert("List generation cancelled");
+                      head = null;
+                      updateVisualization();
+                      return;
+                  }
+
+                  const newNode = new Node(parseInt(value));
+
+                  if (!head) {
+                      head = newNode;
+                      current = head;
+                  } else {
+                      current.next = newNode;
+                      current = current.next;
+                  }
+              }
+
+              updateVisualization();
+              showInfo(`Generated new linked list with ${size} nodes`);
+          }
+
+          async function insertNode() {
+              if (isListEmpty()) {
+                  showAlert("List is empty. Please generate a list first.");
+                  return;
+              }
+
+              const value = prompt("Enter value to insert:");
+              if (value === null) return;
+
+              const position = parseInt(prompt("Enter position (0-based):"));
+              const listLength = getListLength();
+              console.log('listLength', listLength);
+
+              if (isNaN(position) || position < 0 || position > listLength) {
+                  showAlert(`Invalid position. Please enter a number between 0 and ${listLength}.`);
+                  console.log(listLength);
+                  console.log(position);
+
+                  return;
+              }
+
+              const newNode = new Node(parseInt(value));
+
+              if (position === 0) {
+                  newNode.next = head;
+                  head = newNode;
+              } else {
+                  let current = head;
+                  let index = 0;
+
+                  while (current.next && index < position - 1) {
+                      current = current.next;
+                      index++;
+                  }
+
+                  newNode.next = current.next;
+                  current.next = newNode;
+              }
+
+              updateVisualization();
+              showInfo(`Inserted ${value} at position ${position}`);
+          }
+          async function deleteNode() {
+              if (isListEmpty()) {
+                  showAlert("List is empty. Nothing to delete.");
+                  return;
+              }
+
+              const position = parseInt(prompt("Enter position to delete (0-based):"));
+              const listLength = getListLength();
+
+              if (isNaN(position) || position < 0 || position >= listLength) {
+                  showAlert(`Invalid position. Please enter a number between 0 and ${listLength - 1}.`);
+                  return;
+              }
+
+              const nodes = document.querySelectorAll('.node');
+              nodes[position].classList.add('delete', 'animate__animated', 'animate__bounceOut');
+              await new Promise(resolve => setTimeout(resolve, 1000));
+
+              if (position === 0) {
+                  head = head.next;
+              } else {
+                  let current = head;
+                  let index = 0;
+
+                  while (current.next && index < position - 1) {
+                      current = current.next;
+                      index++;
+                  }
+
+                  if (current.next) {
+                      current.next = current.next.next;
+                  }
+              }
+
+              updateVisualization();
+              showInfo(`Deleted node at position ${position}`);
+          }
+
+          async function traverseList() {
+              if (isListEmpty()) {
+                  showAlert("List is empty. Nothing to traverse.");
+                  return;
+              }
+
+              const nodes = document.querySelectorAll('.node');
+              const visitedElements = document.getElementById('visitedElements');
+              visitedElements.textContent = "Visited: ";
+
+              for (let i = 0; i < nodes.length; i++) {
+                  nodes[i].classList.add('highlight', 'animate__animated', 'animate__pulse');
+                  visitedElements.textContent += `${nodes[i].textContent} `;
+                  await new Promise(resolve => setTimeout(resolve, 1000)); nodes[i].classList.remove('highlight');
+              }
+          }
+
+          async function searchNode() {
+              if (isListEmpty()) {
+                  showAlert("List is empty. Nothing to search.");
+                  return;
+              }
+
+              const value = prompt("Enter value to search for:");
+              if (value === null) return;
+
+              const nodes = document.querySelectorAll('.node');
+              const visitedElements = document.getElementById('visitedElements');
+              visitedElements.textContent = "Visited: ";
+
+              for (let i = 0; i < nodes.length; i++) {
+                  nodes[i].classList.add('comparing', 'animate__animated', 'animate__pulse');
+                  visitedElements.textContent += `${nodes[i].textContent} `;
+                  await new Promise(resolve => setTimeout(resolve, 1000));
+                  nodes[i].classList.remove('comparing');
+
+                  if (parseInt(nodes[i].textContent) === parseInt(value)) {
+                      nodes[i].classList.add('found', 'animate__animated', 'animate__flash');
+                      showInfo(`Value ${value} found at position ${i}`);
+                      return;
+                  }
+              }
+
+              showInfo(`Value ${value} not found in the list.`);
+          }
+
+          async function sortList() {
+        if (isListEmpty()) {
+          showAlert("List is empty. Nothing to sort.");
+          return;
+        }
+
+        if (!head.next) {
+          showAlert("List has only one element. Already sorted.");
+          return;
+        }
+
+        const sortInfo = document.getElementById('sortInfo');
+        let swapped;
+        let iterations = 0;
+
+        do {
+          swapped = false;
+          let current = head;
+          let prev = null;
+
+          while (current.next) {
+            iterations++;
+            const nodes = document.querySelectorAll('.node');
+            const currentIndex = getNodeIndex(current);
+            const nextIndex = currentIndex + 1;
+
+            nodes[currentIndex].classList.add('comparing');
+            nodes[nextIndex].classList.add('comparing');
+            sortInfo.textContent = `Comparing ${current.value} and ${current.next.value}`;
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log("demo");
+
+            if (current.value > current.next.value) {
+              nodes[currentIndex].classList.remove('comparing');
+              nodes[nextIndex].classList.remove('comparing');
+              nodes[currentIndex].classList.add('swapping');
+              nodes[nextIndex].classList.add('swapping');
+              sortInfo.textContent = `Swapping ${current.value} and ${current.next.value}`;
+              await new Promise(resolve => setTimeout(resolve, 1000));
+
+              const temp = current.value;
+              current.value = current.next.value;
+              current.next.value = temp;
+              swapped = true;
+
+              updateVisualization();
+              await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            nodes[currentIndex].classList.remove('comparing', 'swapping');
+            nodes[nextIndex].classList.remove('comparing', 'swapping');
+
+            current = current.next;
+            prev = current;
+          }
+        } while (swapped);
+
+        sortInfo.textContent = `Sorting complete! (${iterations} comparisons)`;
+        showInfo("List has been sorted");
+      }
+          function getListLength() {
+              let current = head;
+              let count = 0;
+              while (current) {
+                  count++;
+                  current = current.next;
+              }
+              return count;
+          }
+
+          function updateVisualization() {
+              const container = document.getElementById('linkedListContainer');
+              container.innerHTML = '';
+
+              let current = head;
+              while (current) {
+                  const nodeElement = document.createElement('div');
+                  nodeElement.className = 'node';
+                  nodeElement.textContent = current.value;
+                  container.appendChild(nodeElement);
+
+                  if (current.next) {
+                      const arrow = document.createElement('div');
+                      arrow.className = 'arrow';
+                      container.appendChild(arrow);
+                  }
+
+                  current = current.next;
+              }
+
+              const info = document.getElementById('info');
+              info.textContent = `Linked List Length: ${getListLength()}`;
+          }
+
+          function showInfo(message) {
+              const info = document.getElementById('info');
+              info.textContent = message;
+          }
+    </script>
+  </body>
+</html>

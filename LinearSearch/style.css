@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Honk&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto Mono", monospace;
+    background-color: #030637;
+}
+
+header {
+    background-color: #383ebc;
+    color: azure;
+    text-align: center;
+    font-size: 5rem;
+    letter-spacing: 2;
+    line-height: 1.5;
+    font-family: "Honk", system-ui;
+}
+
+.inputbag {
+    margin-top: 2rem;
+    margin-left: 1rem;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.3rem;
+}
+
+.inputbag input {
+    background-color: #030637;
+    outline: none;
+    height: 2rem;
+    width: 20rem;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+.inputbag label {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+input::placeholder {
+    text-align: center;
+}
+
+input:focus {
+    border-radius: 1rem;
+    border: 2px solid #00dfc4;
+}
+
+.show {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
+    background-color: cyan;
+    border: 1px solid cyan;
+    color: #000;
+    font-size: x-large;
+    padding: 1rem;
+    box-shadow: 0 0 5px cyan, 0 0 25px cyan;
+    border-radius: 10px;
+}
+
+.btn:hover {
+    background-color: cyan;
+    border: 1px solid cyan;
+    color: #030637;
+    box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan, 0 0 200px cyan;
+}
+
+.switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.results {
+    display: block;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.comparisons {
+    color: #fff;
+    font-size: 1.2rem;
+}

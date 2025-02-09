@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Array Visualizer</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Honk&family=Protest+Strike&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Old+Standard+TT&display=swap");
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #000;
+        }
+
+        #title {
+        font-family: "Honk", "Arial", sans-serif !important;
+        font-size: 4rem;
+        background-color: #000000;
+        text-align: center;
+      }
+
+        .operate {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        button {
+        position: relative;
+        width: 120px;
+        height: 40px;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        color: white;
+        flex-direction: column;
+        justify-content: center;
+        border: none;
+        padding: 12px;
+        gap: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      button::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        left: -4px;
+        top: -1px;
+        margin: auto;
+        width: 128px;
+        height: 48px;
+        border-radius: 10px;
+        background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
+        z-index: -10;
+        pointer-events: none;
+        transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      button::after {
+        content: "";
+        z-index: -1;
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+        transform: translate3d(0, 0, 0) scale(0.95);
+        filter: blur(20px);
+      }
+
+      button:hover::after {
+        filter: blur(30px);
+      }
+
+      button:hover::before {
+        transform: rotate(-180deg);
+      }
+
+      button:active::before {
+        scale: 0.7;
+      }
+
+
+        
+        .array-container {
+        padding: 10px;
+        height: auto;
+        display: flex;
+        flex-direction: row; /* Arrange items in a row */
+        justify-content: center; /* Align items from the start */
+        align-items: center;
+        flex-wrap: wrap; /* Wrap items to the next row if needed */
+      }
+        .array-element {
+            width: 80px;
+            height: 70px;
+            margin: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #edf2f7;
+            border-radius: 4px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .array-element.highlight {
+            background: #48bb78;
+            color: white;
+            transform: scale(1.1);
+        }
+        .array-element.highlight-pair {
+            background: #4299e1;
+            color: white;
+            transform: scale(1.1);
+        }
+        .array-element.delete {
+            background: #f56565;
+            color: white;
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        #sizeInfo {
+            width: 100%;
+            text-align: left;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            width: 100px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4a5568;
+        }
+
+        .array-element.editable {
+            cursor: pointer;
+        }
+
+        .array-element input {
+            width: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">Array Visualizer</h1>
+
+    <div class="operate">
+        <button onclick="generateArray()">Generate Array</button>
+        <div class="input-group">
+            <!-- <input type="number" id="insertIndex" placeholder="Index" min="0"> -->
+            <input type="number" id="insertValue" placeholder="Value">
+            <button onclick="insertElement()">Insert</button>
+        </div>
+        <br>
+        <div class="input-group">
+            <input type="number" id="deleteIndex" placeholder="Index" min="0">
+            <button onclick="deleteElement()">Delete</button>
+        </div>
+        <div class="input-group">
+            <input type="number" id="replaceIndex" placeholder="Index" min="0">
+            <input type="number" id="replaceValue" placeholder="Value">
+            <button onclick="replaceElement()">Replace</button>
+        </div>
+        <button onclick="reverseArray()">Reverse</button>
+    </div>
+
+    <div id="arrayContainer" class="array-container">
+        <div id="sizeInfo"></div>
+    </div>
+
+    <script>
+      let array = [];
+      let isAnimating = false;
+      const arrayContainer = document.getElementById('arrayContainer');
+      const sizeInfo = document.getElementById('sizeInfo');
+      const speedControl = document.getElementById('speed');
+
+      
+
+      
+
+      function updateSizeInfo() {
+          sizeInfo.textContent = `Array Size: ${array.length}`;
+      }
+
+      function createArrayElement(value, index) {
+          const element = document.createElement('div');
+          element.className = 'array-element';
+          element.textContent = value;
+          element.dataset.index = index;
+          element.onclick = () => makeEditable(element);
+          return element;
+      }
+
+      function makeEditable(element) {
+          if (element.querySelector('input') || isAnimating) return;
+          
+          const value = element.textContent;
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.value = value;
+          
+          input.onblur = () => {
+              const newValue = parseInt(input.value);
+              if (!isNaN(newValue)) {
+                  array[element.dataset.index] = newValue;
+                  element.textContent = newValue;
+              } else {
+                  element.textContent = value;
+              }
+          };
+          
+          input.onkeypress = (e) => {
+              if (e.key === 'Enter') input.blur();
+          };
+          
+          element.textContent = '';
+          element.appendChild(input);
+          input.focus();
+      }
+
+      function generateArray() {
+          if (isAnimating) return;
+          array = Array.from({length: 8}, () => Math.floor(Math.random() * 100));
+          renderArray();
+      }
+
+      function renderArray() {
+          const elements = array.map((value, index) => createArrayElement(value, index));
+          arrayContainer.innerHTML = '';
+          sizeInfo.textContent = `Array Size: ${array.length}`;
+          elements.forEach(element => arrayContainer.appendChild(element));
+      }
+
+      async function insertElement() {
+    if (isAnimating) return;
+    isAnimating = true;
+    
+    const value = parseInt(document.getElementById('insertValue').value);
+    
+    if (isNaN(value)) {
+        alert('Please enter a valid value');
+        isAnimating = false;
+        return;
+    }
+
+    // Insert at the end of array only
+    const index = array.length;
+    array.push(value);  // Using push instead of splice
+    renderArray();
+    
+    const elements = arrayContainer.getElementsByClassName('array-element');
+    elements[index].classList.add('highlight');
+    
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    elements[index].classList.remove('highlight');
+    isAnimating = false;
+}
+
+      async function deleteElement() {
+          if (isAnimating) return;
+          isAnimating = true;
+          
+          const index = parseInt(document.getElementById('deleteIndex').value);
+          
+          if (isNaN(index) || index < 0 || index >= array.length) {
+              alert('Please enter a valid index');
+              isAnimating = false;
+              return;
+          }
+
+          const elements = arrayContainer.getElementsByClassName('array-element');
+          elements[index].classList.add('delete');
+          
+          await new Promise(resolve => setTimeout(resolve, 300));
+          array.splice(index, 1);
+          renderArray();
+          isAnimating = false;
+      }
+
+      async function replaceElement() {
+          if (isAnimating) return;
+          isAnimating = true;
+          
+          const index = parseInt(document.getElementById('replaceIndex').value);
+          const value = parseInt(document.getElementById('replaceValue').value);
+          
+          if (isNaN(index) || isNaN(value) || index < 0 || index >= array.length) {
+              alert('Please enter valid index and value');
+              isAnimating = false;
+              return;
+          }
+
+          const elements = arrayContainer.getElementsByClassName('array-element');
+          elements[index].classList.add('highlight');
+          
+          await new Promise(resolve => setTimeout(resolve, 300));
+          array[index] = value;
+          renderArray();
+          isAnimating = false;
+      }
+
+      async function reverseArray() {
+          if (isAnimating) return;
+          isAnimating = true;
+          
+          const elements = arrayContainer.getElementsByClassName('array-element');
+          const len = array.length;
+          
+          // Animate swapping pairs
+          for (let i = 0; i < Math.floor(len / 2); i++) {
+              const j = len - 1 - i;
+              
+              // Highlight pair to be swapped
+              elements[i].classList.add('highlight-pair');
+              elements[j].classList.add('highlight-pair');
+              
+             
+              await new Promise(resolve => setTimeout(resolve, 700));
+              // Swap values in array
+              [array[i], array[j]] = [array[j], array[i]];
+              
+              // Update display
+              elements[i].textContent = array[i];
+              elements[j].textContent = array[j];
+              
+              await new Promise(resolve => setTimeout(resolve, 700));
+              
+              // Remove highlighting
+              elements[i].classList.remove('highlight-pair');
+              elements[j].classList.remove('highlight-pair');
+          }
+          
+          isAnimating = false;
+      }
+
+      // Initial array generation
+      generateArray();
+  </script>
+</body>
+</html>

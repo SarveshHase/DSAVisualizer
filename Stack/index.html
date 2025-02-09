@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stack Visualization</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  </head>
+  <body>
+    <h1 id="title">Stack Visualization</h1>
+    <div class="container">
+      <div class="controls">
+        <input type="text" id="value-input" placeholder="Enter value" class="full-rounded" />
+        <button id="push-btn" class="full-rounded">Push</button>
+        <button id="pop-btn" disabled class="full-rounded">Pop</button>
+        <input 
+        type="range"
+        class="button full-rounded"
+        id="speedControl"
+        min="1"
+        max="5"
+        value="2"
+        />
+      </div>
+    </div>
+    <div class="info">
+      <div class="stack-representation">Empty Stack</div>
+      <div class="pointer"></div>
+      <div id="message"></div>
+      <div id="message1"></div>
+    </div>
+      <script src="script.js"></script>
+  </body>
+</html>

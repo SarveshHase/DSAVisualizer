@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Visualizer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="title" class="animate__animated animate__backInRight">Vector Visualizer</h1>
+
+        <div class="operate animate__animated animate__flipInX">
+            <div class="input-section">
+                <input type="number" id="vectorSize" placeholder="Vector Size" min="1">
+                <button onclick="generateVector()">Generate Vector</button>
+            </div>
+
+            <div class="operations">
+                <div class="operation-group">
+                    <input type="number" id="insertIndex" placeholder="Index">
+                    <input type="number" id="insertValue" placeholder="Value">
+                    <button onclick="insertElement()">Insert</button>
+                </div>
+
+                <div class="operation-group">
+                    <input type="number" id="deleteIndex" placeholder="Index">
+                    <button onclick="deleteElement()">Delete</button>
+                </div>
+
+                <div class="operation-group">
+                    <input type="number" id="replaceIndex" placeholder="Index">
+                    <input type="number" id="replaceValue" placeholder="Value">
+                    <button onclick="replaceElement()">Replace</button>
+                </div>
+
+                <button onclick="reverseVector()">Reverse</button>
+            </div>
+        </div>
+
+        <div id="vectorContainer" class="vector-container">
+        </div>
+
+        <div class="sizeInfo">
+            <p>Vector Size: <span id="currentSize">0</span></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

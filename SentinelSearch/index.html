@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div>Sentinel Search 🔍</div>
+    </header>
+    
+    <div class="section inputbag">
+        <div class="pouch">
+            <label for="array">Enter the array:</label>
+            <input type="text" id="array" class="array" placeholder="e.g., 5 2 8 12 1 6">
+        </div>
+        <div class="pouch">
+            <label for="key">Enter the key to search:</label>
+            <input type="text" id="key" class="key" placeholder="e.g., 8">
+        </div>
+    </div>
+
+    <div class="switch">
+        <button class="btn" onclick="startSearching()">Search</button>
+    </div>
+
+    <div class="show"></div>
+
+    <div class="section results">
+        <div class="steps"></div>
+        <div class="final"></div>
+        <div class="comparisons"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

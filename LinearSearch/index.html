@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        Linear Search 🔍
+    </header>
+    <section class="inputbag">
+        <div class="pouch">
+            <label for="utensil">Enter the array:</label>
+            <input type="text" class="array" id="utensil" placeholder="Enter space separated integers">
+        </div>
+        <div class="pouch">
+            <label for="value">Enter the key to search:</label>
+            <input type="text" class="key" id="value" placeholder="Enter key">
+        </div>
+    </section>
+    <div class="switch">
+        <button class="btn" onclick="startSearching()">Search</button>
+    </div>
+    <div class="show"></div>
+    <section class="results">
+        <div class="comparisons"></div>
+    </section>
+    <script src="LinearSearch.js"></script>
+</body>
+</html>
